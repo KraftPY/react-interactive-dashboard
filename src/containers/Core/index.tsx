@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, MouseEvent, useState } from 'react'
 import styles from './styles.module.scss'
 import WidgetTemplate from '../../components/WidgetTemplate'
 
@@ -124,30 +124,25 @@ const testStrGridAreas = `
 const Core: FC<IProps> = ({ rows, cols }: IProps) => {
   const [arrGridAreas, setArrGridAreas] = useState(testArrGridAreas)
 
-  const addAreas = (): void => {
-    setArrGridAreas(testArrGridAreas1)
-    console.log(arrGridAreas)
+  const onMouseDown = (e: MouseEvent): void => {
+    const target = e.target as HTMLDivElement
+    console.log(target.id)
   }
 
   return (
-    <>
-      <button type="button" onClick={addAreas}>
-        Click
-      </button>
-      <div
-        className={styles.mainContainer}
-        style={{
-          gridTemplateColumns: `repeat(${cols}, calc((100%) / ${cols}))`,
-          gridTemplateRows: `repeat(${rows}, calc((100%) / ${rows}))`,
-          gridTemplateAreas: arrayTemplateAreasToString(arrGridAreas),
-          // gridTemplateAreas: testStrGridAreas,
-        }}
-      >
-        {/* <WidgetTemplate test="Hello widget" /> */}
-        <div style={{ gridArea: 'widget1' }} />
-        <div style={{ gridArea: 'widget2' }} />
-      </div>
-    </>
+    <div
+      role="presentation"
+      className={styles.mainContainer}
+      style={{
+        gridTemplateColumns: `repeat(${cols}, calc((100%) / ${cols}))`,
+        gridTemplateRows: `repeat(${rows}, calc((100%) / ${rows}))`,
+        gridTemplateAreas: arrayTemplateAreasToString(arrGridAreas),
+      }}
+      onMouseDown={(e: MouseEvent) => onMouseDown(e)}
+    >
+      <div id="widget1" style={{ gridArea: 'widget1' }} />
+      <div id="widget2" style={{ gridArea: 'widget2' }} />
+    </div>
   )
 }
 
